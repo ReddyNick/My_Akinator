@@ -1,0 +1,36 @@
+digraph Akinator {
+node[shape=record style="filled" fillcolor="#FFEBCD"]
+node0[label="{an animal|{<f1>YES|<f2>NO}}"];
+node0:f1->node1[color="red"];
+node1[label="{stupid|{<f1>YES|<f2>NO}}"];
+node1:f1->node2[color="red"];
+node2[label="{chiken|{<f1>YES|<f2>NO}}"];
+node1:f2->node3;
+node3[label="{Beef|{<f1>YES|<f2>NO}}"];
+node3:f1->node4[color="red"];
+node4[label="{COWrova|{<f1>YES|<f2>NO}}"];
+node3:f2->node5;
+node5[label="{bear|{<f1>YES|<f2>NO}}"];
+node0:f2->node6;
+node6[label="{uses many memes|{<f1>YES|<f2>NO}}"];
+node6:f1->node7[color="red"];
+node7[label="{Zhestkov|{<f1>YES|<f2>NO}}"];
+node6:f2->node8;
+node8[label="{stores cats|{<f1>YES|<f2>NO}}"];
+node8:f1->node9[color="red"];
+node9[label="{Chubarov|{<f1>YES|<f2>NO}}"];
+node8:f2->node10;
+node10[label="{a Sciencestar of YouTube|{<f1>YES|<f2>NO}}"];
+node10:f1->node11[color="red"];
+node11[label="{Ovchinkin|{<f1>YES|<f2>NO}}"];
+node10:f2->node12;
+node12[label="{Has SpaceX|{<f1>YES|<f2>NO}}"];
+node12:f1->node13[color="red"];
+node13[label="{Elon Musk|{<f1>YES|<f2>NO}}"];
+node12:f2->node14;
+node14[label="{Has got white eyes|{<f1>YES|<f2>NO}}"];
+node14:f1->node15[color="red"];
+node15[label="{Eldjay|{<f1>YES|<f2>NO}}"];
+node14:f2->node16;
+node16[label="{Znamenskaya|{<f1>YES|<f2>NO}}"];
+}
