@@ -1,3 +1,4 @@
 # My_Akinator
-hi
-#hi
+akinator + gives definitions of characters
+
+not gives distinctions (so far).
