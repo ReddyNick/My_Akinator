@@ -2,8 +2,8 @@
 #include "Akinator.h"
 #include "assert.h"
 #include "string.h"
-// todo assert from empty file;
 
+//game with the user
 int Play_and_write(My_tree::Akinator* aki, FILE* tree)
 {
     char c = {};
@@ -19,6 +19,7 @@ int Play_and_write(My_tree::Akinator* aki, FILE* tree)
             aki->Try_to_guess();
             continue;
         }
+
         else
         if (c == 'd')
         {
@@ -44,6 +45,8 @@ int Play_and_write(My_tree::Akinator* aki, FILE* tree)
 
 int main() {
 
+    //tree.txt is the file where
+    //akinator's data is stored
     FILE* tree = fopen("tree.txt", "r");
     assert(tree != NULL);
 
@@ -51,18 +54,14 @@ int main() {
 
     akinator.Read_tree(tree);
 
-
+    //interactive game with the user
     Play_and_write(&akinator, tree);
     fclose(tree);
 
-//    akinator.root->left = akinator.root->right;
-//    if(!akinator.Verificator())
-//        printf("tree is OK\n");
-
-
+    //write dotgraph file
     FILE* dot = fopen("dot/firstgraph.gv","w");
     akinator.Write_DOT(dot);
-    fclose(dot);
 
+    fclose(dot);
     return 0;
 }

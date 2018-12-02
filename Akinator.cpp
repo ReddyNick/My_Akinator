@@ -8,6 +8,7 @@
 namespace My_tree
 {
 
+// write prefix
 int Akinator::Write_tree(Elem *ptr, FILE* output)
 {
     assert(output != NULL);
@@ -25,10 +26,13 @@ int Akinator::Write_tree(Elem *ptr, FILE* output)
 
     fprintf(output, "}");
 
-    return 1;
+    return 0;
 }
 
-Elem* Akinator::Read_tree(FILE* input)
+// read the whole file in the buf
+// then works with buf.
+// prefix format of the tree
+int Akinator::Read_tree(FILE* input)
 {
     assert(input != NULL);
 
@@ -46,16 +50,28 @@ Elem* Akinator::Read_tree(FILE* input)
     root = Make_tree(ptr);
 
     delete[] buf;
+
+    return 0;
 }
 
+//uses buf to make tree
+//recursively.
 Elem* Akinator::Make_tree(char* &ptr)
 {
     char string[STR_MAXSIZE] = "";
+
+    //while reading we have to
+    //move ptr.
+    //so move tells us how much
+    //we should move
     int move = 0;
 
     sscanf(ptr, "{%[^}{\n\r] %n", string, &move);
+    //move ptr
     ptr += move;
 
+    //if move is 0
+    //smth is incorrect.
     assert(move != 0);
 
     if (strcmp(string, "nill") == 0)
@@ -66,6 +82,7 @@ Elem* Akinator::Make_tree(char* &ptr)
 
     Elem* newelem = new Elem;
     size++;
+    //newelem->data = string
     strcpy(newelem->data, string);
 
     //read left
@@ -80,12 +97,14 @@ Elem* Akinator::Make_tree(char* &ptr)
     newelem->right = Make_tree(ptr);
     if (newelem->right != nullptr)
         newelem->right->parent = newelem;
+        //newelem->right->side = false by default
 
     ptr++; // for '}'
 
     return newelem;
 }
 
+//check if ptr is a leaf of the tree
 bool is_leaf(Elem* ptr)
 {
     if (ptr->left == nullptr && ptr->right == nullptr)
@@ -94,29 +113,7 @@ bool is_leaf(Elem* ptr)
         return false;
 }
 
-int Answer(Elem*& ptr, Elem* where, bool side)
-{
-    if (where != nullptr)
-        ptr = where;
-    else
-    {
-        printf("\ni dunno, tell me please what it is.\n");
-
-        char str[STR_MAXSIZE]= "";
-        scanf(" %s", str);
-
-        where = new Elem;
-        strcpy(where->data, str);
-
-        if (side)
-            ptr->left = where;
-        else
-            ptr->right = where;
-
-        printf("thanks, now i'm a bit more intelligent\n");
-    }
-}
-
+//make new connections between old elems and a new one
 int reconnect(Elem*& parentside, Elem* elem, Elem* new_item, Elem* difference)
 {
 
@@ -135,24 +132,29 @@ int reconnect(Elem*& parentside, Elem* elem, Elem* new_item, Elem* difference)
     return 0;
 }
 
+//if the user wants to add new object (item)
 int New_Item(Elem* elem)
 {
     printf("sorry i don't know(\n"
            "can you tell me what it is?\n");
 
+    //user tells new object
     scanf(" ");
     char str[STR_MAXSIZE + 1] = "";
     fgets(str, STR_MAXSIZE + 1, stdin);
 
-
+    //to delete '\n' in the end of the string
     char* c = strchr(str,'\n');
     *c = '\0';
+
 
     Elem* new_item = new Elem;
     strcpy(new_item->data, str);
 
     printf("OK, how does %s differs from %s?\n", new_item->data, elem->data);
 
+    //the leather bag with flesh and bones
+    //tells the difference
     fgets(str, STR_MAXSIZE + 1, stdin);
     c = strchr(str, '\n');
     *c = '\0';
@@ -175,6 +177,7 @@ int New_Item(Elem* elem)
     return 0;
 }
 
+// the interactive game with a user
 int Akinator::Try_to_guess()
 {
 
@@ -193,20 +196,26 @@ const bool RIGHT = false;
         scanf(" %c", &answer);
 
         if (answer == 'y')
-            // ptr = ptr->left
-            Answer(ptr, ptr->left, LEFT);
+        {
+            assert(ptr->left != nullptr);
+            ptr = ptr->left;
+        }
 
         else
         if (answer == 'n')
-            // ptr = ptr->right
-            Answer(ptr, ptr->right, RIGHT);
+        {
+            assert(ptr->right != nullptr);
+            ptr = ptr->right;
+        }
 
         else
             printf("i don't understand, try to be more understandable, PLEASE \n");
     }
 
+    //if ptr is leaf
     assert (ptr != nullptr);
 
+    //ask the user
     printf("it is %s?\n",ptr->data);
 
     scanf(" %c", &answer);
@@ -216,6 +225,7 @@ const bool RIGHT = false;
 
     else
     if (answer == 'n')
+        //if wrong then add new item
         New_Item(ptr);
 
     else
@@ -224,7 +234,7 @@ const bool RIGHT = false;
     return 0;
 }
 
-
+// delete tree recursively
 int Delete_rec(Elem* ptr)
 {
     if (ptr->left != nullptr)
@@ -247,6 +257,7 @@ Akinator::~Akinator()
      root = nullptr;
 }
 
+//to recursively write dot file
 int Dotwrite_elems(Elem* elem, int* num, FILE* out)
 {
 #define YEScolor "red"
@@ -273,6 +284,8 @@ int Dotwrite_elems(Elem* elem, int* num, FILE* out)
     return 0;
 }
 
+//write code in dot language
+//to make graph
 int Akinator::Write_DOT(FILE* out)
 {
     assert(out != NULL);
@@ -289,6 +302,7 @@ int Akinator::Write_DOT(FILE* out)
     return 0;
 }
 
+//verificate recursively
 int Check(Elem* elem, int length)
 {
     if (elem == nullptr) return length;
@@ -322,6 +336,9 @@ int Akinator::Verificator()
     return 0;
 }
 
+//find the chosen element
+//dfs
+//(i know, it is not the best way)
 Elem* FindElem(char* ans, Elem* elem)
 {
     if (is_leaf(elem))
@@ -341,6 +358,8 @@ Elem* FindElem(char* ans, Elem* elem)
 
 }
 
+//gives the definition
+//of any chosen object
 int Akinator::Give_definition(char *ans)
 {
     assert(strcmp(ans, ""));
